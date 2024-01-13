@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>To-Do List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html {
+      height: 100%;
+    }
+    header {
+      backdrop-filter: blur(10px); /* Adjust the blur value as needed */
+      background-color: rgba(255, 255, 255, 0.6); /* Adjust the color and opacity as needed */
+      padding: 8px;
+    }
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background-image: url('to do.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: blur(3px); 
+    }
+
+    .mytodo-list {
+      width: 90%;
+      max-width: 500px;
+      margin: 100px auto;
+      border: 1px solid #ccc;
+      padding: 20px;
+      height: 300px; /* Added fixed height */
+      overflow: auto; /* Added scrollable container */
+      background-color: #48659d;
+      border-radius: 30px;
+      box-shadow: 5px 0 20px rgba(0, 0, 0, 0.8);
+      color: white; /* Added text color */
+      font-family: 'Courier New', monospace; /* Added font family */
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      font-weight: bold; /* Added font weight */
+      font-size: 18px; /* Added font size */
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Added box shadow */
+      padding: 8px; /* Added padding */
+    }
+
+    li.completed span {
+      text-decoration: line-through; /* Added strikethrough line */
+      text-decoration-color: black;
+    }
+
+    .buttons {
+      display: flex;
+      align-items: center;
+    }
+
+    button {
+      margin-left: 5px;
+    }
+
+    .clear-button {
+      background-color: #ea6b06; /* Updated clear button color */
+      color: white; /* Added clear button text color */
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold; /* Added clear button font weight */
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Added box shadow */
+    }
+
+    .clear-button:hover {
+      background-color: #00c481; /* Updated clear button hover color */
+    }
+
+    .delete-button {
+      background-color: #df8c84; /* Added delete button color */
+      color: white; /* Added delete button text color */
+      font-weight: bold; /* Added delete button font weight */
+    }
+
+    .update-button {
+      background-color: #488a2d; /* Added update button color */
+      color: white; /* Added update button text color */
+      font-weight: bold; /* Added update button font weight */
+    }
+
+    .create-button {
+      background-color: #00c481; /* Updated create button color */
+      color: white; /* Added create button text color */
+      font-weight: bold; /* Added create button font weight */
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Added box shadow */
+    }
+
+    .create-button:hover {
+      background-color: #00b06b; /* Updated create button hover color */
+    }
+
+    input[type="text"] {
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      padding: 5px;
+      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    input[type="text"]:focus {
+      border-color: #00c481;
+      outline: none;
+      box-shadow: 1px 1px 5px rgba(0, 196, 129, 0.5);
+    }
+
+    input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #ccc;
+      border-radius: 3px;
+      transition: border-color 0.3s;
+    }
+
+    input[type="checkbox"]:checked {
+      border-color: #00c481;
+      background-color: #00c481;
+    }
+
+    @media screen and (max-width: 600px) {
+      .mytodo-list {
+        margin: 50px auto;
+        width: 70%;
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <center>
+    <header>
+      <h2 style="font-size: 24px; font-family: 'Courier New', monospace; color: #285342; margin-top: 0;">Today's Planner</h2>
+    </header>
+  </center>
+  <div class="mytodo-list">
+    <center>
+      <h2 style="margin-bottom: 30px; font-size: 27px; text-decoration: underline;">To-Do List:</h2>
+    </center>
+    <form action="javascript:void(0);" id="CreateForm">
+      <input type="text" id="add-task" placeholder="New Task">
+      <button type="button" onclick="CreateTask()" class="create-button">Create</button>
+      <button class="clear-button" onclick="ClearList()">Clear All</button>
+    </form>
+    <ul id="taskList"></ul>
+  </div>
+
+  <script>
+    let mytodo_list = ["Do Exercise", "Solve Bug", "Meet Team"];
+
+    function CreateTask() {
+      let task = document.getElementById("add-task").value;
+
+      if (task === "") {
+        alert("Please enter a task");
+      } else {
+        mytodo_list.push(task);
+        document.getElementById("add-task").value = "";
+        ReadAllTask();
+      }
+    }
+
+    function ReadAllTask() {
+      let taskList = document.getElementById("taskList");
+      taskList.innerHTML = "";
+
+      for (let i = 0; i < mytodo_list.length; i++) {
+        let listItem = document.createElement("li");
+        let checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.onchange = function () {
+          toggleCompleted(i);
+        };
+        listItem.appendChild(checkbox);
+
+        let taskText = document.createElement("span");
+        taskText.textContent = mytodo_list[i];
+        listItem.appendChild(taskText);
+
+        let buttonsDiv = document.createElement("div");
+        buttonsDiv.className = "buttons";
+
+        let updateButton = document.createElement("button");
+        updateButton.textContent = "Update";
+        updateButton.className = "update-button"; /* Added update button class */
+        updateButton.onclick = function () {
+          UpdateTask(i);
+        };
+        buttonsDiv.appendChild(updateButton);
+
+        let deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.className = "delete-button"; /* Added delete button class */
+        deleteButton.onclick = function () {
+          DeleteTask(i);
+        };
+        buttonsDiv.appendChild(deleteButton);
+
+        listItem.appendChild(buttonsDiv);
+        taskList.appendChild(listItem);
+      }
+    }
+
+    function toggleCompleted(item) {
+      let listItem = document.getElementById("taskList").children[item];
+      listItem.classList.toggle("completed");
+    }
+
+    function UpdateTask(item) {
+      let task = prompt("Enter the updated task:", mytodo_list[item]);
+      if (task !== null) {
+        mytodo_list[item] = task.trim();
+        ReadAllTask();
+      }
+    }
+
+    function DeleteTask(item) {
+      mytodo_list.splice(item, 1);
+      ReadAllTask();
+    }
+
+    function ClearList() {
+      mytodo_list = [];
+      ReadAllTask();
+    }
+
+    ReadAllTask();
+  </script>
+</body>
+</html>

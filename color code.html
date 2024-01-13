@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Color Code Identifier</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url(color.png);
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      max-width: 600px;
+      text-align: center;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      font-size: 30px;
+      color: #333;
+    }
+
+    #imageContainer {
+      max-width: 100%;
+      max-height: 300px;
+      margin: 20px auto;
+      overflow: auto;
+    }
+
+    #imageContainer img {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+    }
+
+    #colorCode {
+      font-size: 20px;
+      margin-top: 10px;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .upload-btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .upload-btn:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Color Code Identifier</h1>
+    <input type="file" id="upload" accept="image/*">
+    <label for="upload" class="upload-btn">Upload Image</label>
+    <div id="imageContainer"></div>
+    <div id="colorCode"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
